@@ -146,9 +146,9 @@ func (t *JSONDriver) Resolve(locale string, key string) string {
 
 // ResolveStruct find translation from translatable
 // if empty string returned from translatable or struct not translatable, default translation will resolved
-func (t *JSONDriver) ResolveStruct(s interface{}, locale string, key string) string {
+func (t *JSONDriver) ResolveStruct(s interface{}, locale string, key string, field string) string {
 	if tr := resolveTranslatable(s); tr != nil {
-		tr := tr.GetTranslation(locale, key)
+		tr := tr.GetTranslation(locale, key, field)
 		if tr != "" {
 			return tr
 		}
@@ -170,8 +170,8 @@ func (t *JSONDriver) Translate(locale string, key string, placeholders map[strin
 // TranslateStruct translate using translatable interface
 // if empty string returned from translatable or struct not translatable, default translation will resolved
 // Caution: use non-pointer implemantation for struct
-func (t *JSONDriver) TranslateStruct(s interface{}, locale string, key string, placeholders map[string]string) string {
-	message := t.ResolveStruct(s, locale, key)
+func (t *JSONDriver) TranslateStruct(s interface{}, locale string, key string, field string, placeholders map[string]string) string {
+	message := t.ResolveStruct(s, locale, key, field)
 	for p, v := range placeholders {
 		message = strings.ReplaceAll(message, "{"+p+"}", v)
 	}

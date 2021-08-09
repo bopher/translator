@@ -8,6 +8,8 @@ Translator library with default `Json` and `Memory` driver.
 
 By default all translations read from config driver (json files or memory). Structures translations can resolved by structure itself and override global translations. For making structure translatable you must implement `Translatable` interface.
 
+**Note:** Translatable functionality used by validator library.
+
 **Caution:** use non-pointer implemantation for struct!
 
 ```go
@@ -16,19 +18,15 @@ type Person struct {
     Age  string
 }
 
-func (p Person) GetTranslation(locale string, key string) string {
-    switch key {
-    case "Name":
-        if locale == "fa" {
-            return "نام"
-        } else {
-            return "Name"
-        }
-    case "Age":
-        if locale == "fa" {
-            return "سن"
-        } else {
-            return "Age"
+func (p Person) GetTranslation(locale string, key string, field string) string {
+    if  key == "required" {
+        switch locale {
+        case "en":
+            if field == "Name" {
+                return "Name is required"
+            }else{
+                return "Age is required"
+            }
         }
     }
     return ""
@@ -99,33 +97,7 @@ Find translation from translatable. If empty string returned from translatable o
 
 ```go
 // Signature:
-ResolveStruct(s interface{}, locale string, key string) string
-
-// Example:
-type Person struct {
-    Name string
-    Age  string
-}
-
-func (p Person) GetTranslation(locale string, key string) string {
-    if key == "greeting" {
-        if locale == "fa" {
-            return "روزبخیر {name}"
-        }else{
-            return "Greeting {name}"
-        }
-    }
-    return ""
-}
-
-
-p := &Person{
-    Name: "John",
-    Age: 25,
-}
-t.ResolveStruct(p, "en", "greeting") // Greeting {name}
-t.ResolveStruct(p, "en", "welcome") // Hello {name}, welcome!
-t.ResolveStruct(p, "en", "non_exists") // ""
+ResolveStruct(s interface{}, locale string, key string, field string) string
 ```
 
 ### Translate
@@ -146,8 +118,5 @@ Translate using translatable interface. if empty string returned from translatab
 
 ```go
 // Signature:
-TranslateStruct(s interface{}, locale string, key string, placeholders map[string]string) string
-
-// Example
-t.TranslateStruct(p, "en", "greeting", map[string]string{ "name": "John" }) // Greeting John
+TranslateStruct(s interface{}, locale string, key string, field string, placeholders map[string]string) string
 ```

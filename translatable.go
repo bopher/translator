@@ -2,7 +2,7 @@ package translator
 
 // Translatable interface for struct
 type Translatable interface {
-	GetTranslation(locale string, key string) string
+	GetTranslation(locale string, key string, field string) string
 }
 
 func resolveTranslatable(s interface{}) Translatable {

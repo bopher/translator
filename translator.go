@@ -12,7 +12,7 @@ type Translator interface {
 	Resolve(locale string, key string) string
 	// ResolveStruct find translation from translatable
 	// if empty string returned from translatable or struct not translatable, default translation will resolved
-	ResolveStruct(s interface{}, locale string, key string) string
+	ResolveStruct(s interface{}, locale string, key string, field string) string
 	// Translate get translation for locale
 	// @example:
 	// t.Translate("en", "welcome", map[string]string{ "name": "John" })
@@ -20,5 +20,5 @@ type Translator interface {
 	// TranslateStruct translate using translatable interface
 	// if empty string returned from translatable or struct not translatable, default translation will resolved
 	// Caution: use non-pointer implemantation for struct
-	TranslateStruct(s interface{}, locale string, key string, placeholders map[string]string) string
+	TranslateStruct(s interface{}, locale string, key string, field string, placeholders map[string]string) string
 }
