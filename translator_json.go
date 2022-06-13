@@ -30,7 +30,7 @@ func (this *JSONDriver) init(fallbackLocale string, dir string) error {
 	return this.Load()
 }
 
-func (JSONDriver) err(pattern string, params ...interface{}) error {
+func (JSONDriver) err(pattern string, params ...any) error {
 	return utils.TaggedError([]string{"JsonTranslator"}, pattern, params...)
 }
 
@@ -68,7 +68,7 @@ func (this *JSONDriver) Load() error {
 	}
 
 	var unwrapJson = func(jsonText string) (string, error) {
-		var res map[string]interface{}
+		var res map[string]any
 		if err := json.Unmarshal([]byte(jsonText), &res); err != nil {
 			return "", err
 		}
@@ -150,7 +150,7 @@ func (this JSONDriver) Resolve(locale string, key string) string {
 
 // ResolveStruct find translation from translatable
 // if empty string returned from translatable or struct not translatable, default translation will resolved
-func (this JSONDriver) ResolveStruct(s interface{}, locale string, key string, field string) string {
+func (this JSONDriver) ResolveStruct(s any, locale string, key string, field string) string {
 	if tr := resolveTranslatable(s); tr != nil {
 		tr := tr.GetTranslation(locale, key, field)
 		if tr != "" {
@@ -174,7 +174,7 @@ func (this JSONDriver) Translate(locale string, key string, placeholders map[str
 // TranslateStruct translate using translatable interface
 // if empty string returned from translatable or struct not translatable, default translation will resolved
 // Caution: use non-pointer implemantation for struct
-func (this JSONDriver) TranslateStruct(s interface{}, locale string, key string, field string, placeholders map[string]string) string {
+func (this JSONDriver) TranslateStruct(s any, locale string, key string, field string, placeholders map[string]string) string {
 	message := this.ResolveStruct(s, locale, key, field)
 	for p, v := range placeholders {
 		message = strings.ReplaceAll(message, "{"+p+"}", v)

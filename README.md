@@ -97,7 +97,7 @@ Find translation from translatable. If empty string returned from translatable o
 
 ```go
 // Signature:
-ResolveStruct(s interface{}, locale string, key string, field string) string
+ResolveStruct(s any, locale string, key string, field string) string
 ```
 
 ### Translate
@@ -118,5 +118,5 @@ Translate using translatable interface. if empty string returned from translatab
 
 ```go
 // Signature:
-TranslateStruct(s interface{}, locale string, key string, field string, placeholders map[string]string) string
+TranslateStruct(s any, locale string, key string, field string, placeholders map[string]string) string
 ```
